@@ -62,7 +62,7 @@ func ListAds(repo ads.Repository) fiber.Handler {
 		}
 		// Add other conditions similarly...
 
-		ads, total, err := repo.ListActiveAds(int(offset), int(limit), conditions)
+		ads, err := repo.ListActiveAds(int(offset), int(limit), conditions)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
@@ -71,7 +71,6 @@ func ListAds(repo ads.Repository) fiber.Handler {
 
 		return c.JSON(fiber.Map{
 			"items": ads,
-			"total": total,
 		})
 	}
 }

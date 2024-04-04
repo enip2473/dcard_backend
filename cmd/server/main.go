@@ -26,6 +26,11 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
+	err = db.AutoMigrate(&ads.Ad{})
+	if err != nil {
+		log.Fatalf("Failed to migrate database: %v", err)
+	}
+
 	fmt.Println("Connected to database", db)
 
 	// // Create Fiber app
@@ -35,5 +40,5 @@ func main() {
 	adRepo := ads.NewAdRepository(db)
 	app.Post("/api/v1/ad", api.CreateAd(adRepo))
 	app.Get("/api/v1/ad", api.ListAds(adRepo)) // // Start the server
-	log.Fatal(app.Listen(cfg.Port))            // Or ":8080" for a default port
+	log.Fatal(app.Listen(":" + cfg.Port))      // Or ":8080" for a default port
 }

@@ -1,14 +1,12 @@
 package ads
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
 type Repository interface {
 	CreateAd(ad *Ad) error
-	ListActiveAds(offset, limit int, conditions map[string]interface{}) ([]Ad, int64, error)
+	ListActiveAds(offset, limit int, conditions map[string]interface{}) ([]Ad, error)
 }
 
 type AdRepository struct {
@@ -23,11 +21,10 @@ func (repo *AdRepository) CreateAd(ad *Ad) error {
 	return repo.db.Create(ad).Error
 }
 
-func (repo *AdRepository) ListActiveAds(offset, limit int, conditions map[string]interface{}) ([]Ad, int64, error) {
+func (repo *AdRepository) ListActiveAds(offset, limit int, conditions map[string]interface{}) ([]Ad, error) {
 	var ads []Ad
-	var total int64
 
-	query := repo.db.Model(&Ad{}).Where("end_at >= ?", time.Now())
+	query := repo.db.Model(&Ad{})
 
 	// Add your conditions logic here
 	// For example:
@@ -40,10 +37,6 @@ func (repo *AdRepository) ListActiveAds(offset, limit int, conditions map[string
 		})
 	}
 
-	if err := query.Count(&total).Error; err != nil {
-		return nil, 0, err
-	}
-
 	err := query.Offset(offset).Limit(limit).Find(&ads).Error
-	return ads, total, err
+	return ads, err
 }
