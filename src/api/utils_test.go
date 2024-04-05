@@ -244,11 +244,15 @@ func TestParseQuery(t *testing.T) {
 
 			if tt.expectStatus == fiber.StatusOK {
 				var result ads.Query
-				json.NewDecoder(resp.Body).Decode(&result)
+				if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+					t.Fatalf("Failed to decode response body: %v", err)
+				}
 				assert.Equal(t, tt.expectedResult, result)
 			} else {
 				var errorResult map[string]string
-				json.NewDecoder(resp.Body).Decode(&errorResult)
+				if err := json.NewDecoder(resp.Body).Decode(&errorResult); err != nil {
+					t.Fatalf("Failed to decode response body: %v", err)
+				}
 				assert.Contains(t, errorResult["error"], tt.expectedErr)
 			}
 		})

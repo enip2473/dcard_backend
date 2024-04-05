@@ -60,11 +60,9 @@ func TestCreateAd(t *testing.T) {
 }
 
 func TestListAds(t *testing.T) {
-	// Setup Fiber app
 	app := fiber.New()
 	app.Get("/api/v1/ad", ListAds(mockRepo{})) // Use a mock repo implementation
 
-	// Test case: Listing ads with default query parameters
 	req := httptest.NewRequest("GET", "/api/v1/ad", nil)
 
 	resp, err := app.Test(req)
@@ -74,7 +72,9 @@ func TestListAds(t *testing.T) {
 	var result struct {
 		Items []ads.Ad
 	}
-	json.NewDecoder(resp.Body).Decode(&result)
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		t.Fatalf("Failed to decode response body: %v", err)
+	}
 	assert.NotEmpty(t, result.Items)
 }
 
