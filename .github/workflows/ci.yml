@@ -22,8 +22,8 @@ jobs:
       with:
         version: v1.57.2
     - name: Run golangci-lint
-      run: golangci-lint run ./src/...
-      working-directory: ./
+      run: golangci-lint run
+      working-directory: ./src
     - name: Get dependencies
       run: go get -v -t -d ./...
       working-directory: ./src 
