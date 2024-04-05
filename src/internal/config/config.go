@@ -8,10 +8,11 @@ import (
 )
 
 type Config struct {
-	DatabaseURL string        `mapstructure:"database_url"`
-	Port        string        `mapstructure:"port"`
-	LogLevel    string        `mapstructure:"log_level"`
-	Timeout     time.Duration `mapstructure:"timeout"`
+	DatabaseURL     string        `mapstructure:"database_url"`
+	TestDatabaseURL string        `mapstructure:"test_database_url"`
+	Port            string        `mapstructure:"port"`
+	LogLevel        string        `mapstructure:"log_level"`
+	Timeout         time.Duration `mapstructure:"timeout"`
 }
 
 func LoadConfig(path string) (*Config, error) {

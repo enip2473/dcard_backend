@@ -96,5 +96,6 @@ func isValidPlatform(platform string) bool {
 }
 
 func isValidCountryCode(code string) bool {
-	return countries.ByName(code) != countries.Unknown
+	name := countries.ByName(code).String()
+	return name != "None" && name != "Unknown"
 }
