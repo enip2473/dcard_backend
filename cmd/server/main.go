@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"dcard_backend/api"
@@ -21,24 +20,24 @@ func main() {
 
 	// Initialize database connection
 	db, err := db.ConnectGorm(cfg.DatabaseURL)
-
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	err = db.AutoMigrate(&ads.Ad{})
+	err = db.AutoMigrate(
+		&ads.Ad{},
+		&ads.Country{},
+		&ads.Platform{},
+	)
+
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
 
-	fmt.Println("Connected to database", db)
-
-	// // Create Fiber app
 	app := fiber.New()
 
-	// // Set up routes using your existing handlers
 	adRepo := ads.NewAdRepository(db)
 	app.Post("/api/v1/ad", api.CreateAd(adRepo))
-	app.Get("/api/v1/ad", api.ListAds(adRepo)) // // Start the server
-	log.Fatal(app.Listen(":" + cfg.Port))      // Or ":8080" for a default port
+	app.Get("/api/v1/ad", api.ListAds(adRepo))
+	log.Fatal(app.Listen(":" + cfg.Port))
 }

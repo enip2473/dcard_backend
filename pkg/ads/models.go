@@ -1,32 +1,64 @@
 package ads
 
 import (
-	"errors"
 	"time"
+
+	"gorm.io/gorm"
 )
 
-// Ad represents an advertisement with a title, start and end dates, and conditions.
-type Ad struct {
-	ID      uint      `gorm:"primaryKey" json:"id"`
-	Title   string    `json:"title"`
-	StartAt time.Time `json:"startAt"`
-	EndAt   time.Time `json:"endAt"`
-	// Conditions map[string]interface{} `json:"conditions"`
+type GenderTarget string
+
+const (
+	GenderMale   GenderTarget = "M"
+	GenderFemale GenderTarget = "F"
+)
+
+type Condition struct {
+	AgeStart *int           `json:"ageStart"`
+	AgeEnd   *int           `json:"ageEnd"`
+	Gender   []GenderTarget `json:"gender"`
+	Country  []string       `json:"country"`
+	Platform []string       `json:"platform"`
 }
 
-// Validate checks if the Ad instance has valid data.
-func (a *Ad) Validate() error {
-	// Ensure the title is not empty
-	if a.Title == "" {
-		return errors.New("the title cannot be empty")
-	}
+type Query struct {
+	Offset   int `json:"offset"`
+	Limit    int `json:"limit"`
+	Age      int `json:"age"`
+	Gender   string
+	Country  string
+	Platform string
+}
 
-	// Ensure the end date is after the start date
-	if a.EndAt.Before(a.StartAt) {
-		return errors.New("the end date must be after the start date")
-	}
+type Response struct {
+	Title string    `json:"title"`
+	EndAt time.Time `json:"endAt"`
+}
+type AdInput struct {
+	Title      string    `json:"title"`
+	StartAt    time.Time `json:"startAt"`
+	EndAt      time.Time `json:"endAt"`
+	Conditions Condition `json:"conditions"`
+}
 
-	// Optionally, add more validations for the Conditions field if needed
+type Ad struct {
+	gorm.Model
+	Title        string       `json:"title"`
+	StartAt      time.Time    `json:"startAt"`
+	EndAt        time.Time    `json:"endAt"`
+	AgeStart     int          `json:"startAge"`
+	AgeEnd       int          `json:"endAge"`
+	GenderTarget GenderTarget `json:"genderTarget"`
+	Countries    []Country    `gorm:"many2many:ad_countries;"`
+	Platforms    []Platform   `gorm:"many2many:ad_platforms;"`
+}
 
-	return nil
+type Country struct {
+	gorm.Model
+	Code string `gorm:"primaryKey" json:"code"`
+}
+
+type Platform struct {
+	gorm.Model
+	Name string `gorm:"primaryKey" json:"name"`
 }

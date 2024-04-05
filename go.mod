@@ -4,6 +4,7 @@ go 1.22.0
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/biter777/countries v1.7.4 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gofiber/fiber/v2 v2.52.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
