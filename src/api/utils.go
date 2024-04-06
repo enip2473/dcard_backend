@@ -116,16 +116,3 @@ func ParseQuery(c *fiber.Ctx) (ads.Query, error) {
 
 	return query, nil
 }
-
-func QueryToString(query ads.Query) string {
-	queryString := fmt.Sprintf(
-		"offset=%d&limit=%d&age=%d&gender=%s&country=%s&platform=%s",
-		query.Offset,
-		query.Limit,
-		query.Age,
-		query.Gender,
-		query.Country,
-		query.Platform,
-	)
-	return queryString
-}

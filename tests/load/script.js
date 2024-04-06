@@ -8,11 +8,11 @@ export let options = {
             executor: 'ramping-arrival-rate',
             startRate: 10, // start at 10 RPS
             timeUnit: '1s',
-            preAllocatedVUs: 1000, // number of VUs to pre-allocate
+            preAllocatedVUs: 3000, // number of VUs to pre-allocate
             maxVUs: 3000, // maximum number of VUs that can be allocated during the test
             stages: [
-                { target: 4000, duration: '1m' }, // ramp to 100 RPS over 2 minutes
-                { target: 4000, duration: '30s' }, // hold 100 RPS for 3 minutes
+                { target: 3000, duration: '1m' }, // ramp to 100 RPS over 2 minutes
+                { target: 3000, duration: '30s' }, // hold 100 RPS for 3 minutes
             ],
         },
     },
@@ -28,6 +28,7 @@ function maybeAddQueryParam(baseURL, paramName, paramValue) {
 
 export default function () {
     let url = 'https://dcard-backend-33cjpqddvq-de.a.run.app/api/v1/ad';
+    // let url = 'http://127.0.0.1:8000/api/v1/ad';
 
     url = maybeAddQueryParam(url, 'age', randomIntBetween(1, 100));
     url = maybeAddQueryParam(url, 'gender', Math.random() > 0.5 ? 'M' : 'F');
