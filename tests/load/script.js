@@ -8,11 +8,11 @@ export let options = {
             executor: 'ramping-arrival-rate',
             startRate: 10, // start at 10 RPS
             timeUnit: '1s',
-            preAllocatedVUs: 100, // number of VUs to pre-allocate
-            maxVUs: 2000, // maximum number of VUs that can be allocated during the test
+            preAllocatedVUs: 1000, // number of VUs to pre-allocate
+            maxVUs: 3000, // maximum number of VUs that can be allocated during the test
             stages: [
-                { target: 1000, duration: '1m' }, // ramp to 100 RPS over 2 minutes
-                { target: 1000, duration: '30s' }, // hold 100 RPS for 3 minutes
+                { target: 4000, duration: '1m' }, // ramp to 100 RPS over 2 minutes
+                { target: 4000, duration: '30s' }, // hold 100 RPS for 3 minutes
             ],
         },
     },

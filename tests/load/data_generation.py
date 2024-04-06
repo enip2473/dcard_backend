@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from tqdm import tqdm
 import random
 import requests
 
@@ -57,8 +58,8 @@ def generate_data(num_records):
 
 ads_data = generate_data(1000)
 
-for ad_data in ads_data:
-    response = requests.post("http://127.0.0.1:8080/api/v1/ad", json=ad_data)
+for ad_data in tqdm(ads_data):
+    response = requests.post("https://dcard-backend-33cjpqddvq-de.a.run.app/api/v1/ad", json=ad_data)
     if response.status_code != 201:
         print(f"Failed to post data: {response.json()}")
 
