@@ -46,7 +46,7 @@ jobs:
             --platform managed \
             --region asia-east1 \
             --allow-unauthenticated \
-            --set-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            --set-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }},REDIS_ADDR=${{ secrets.REDIS_ADDR }},REDIS_PASS=${{ secrets.REDIS_PASS }} \
             --concurrency=100 \
             --add-cloudsql-instances=${{ secrets.GCP_INSTANCE_CONNECTION_NAME }}
 

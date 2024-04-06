@@ -40,6 +40,12 @@ func (repo *AdRepository) FirstOrCreatePlatform(name string) (Platform, error) {
 func (repo *AdRepository) ListActiveAds(query Query) ([]Response, error) {
 	var ads []Response
 
+	redisAds, err := RedisQuery(query)
+
+	if err == nil {
+		return redisAds, nil
+	}
+
 	now := time.Now()
 	rawQuery := repo.db.Model(&Ad{}).Select("title, end_at").Where("end_at > ?", now).Where("start_at < ?", now)
 
@@ -61,6 +67,11 @@ func (repo *AdRepository) ListActiveAds(query Query) ([]Response, error) {
 			Where("ad_platforms.platform_name = ? OR ad_platforms.platform_name = 'any'", query.Platform)
 	}
 
-	err := rawQuery.Offset(query.Offset).Limit(query.Limit).Order("end_at asc").Find(&ads).Error
+	err = RedisInsert(query, ads)
+	if err != nil {
+		return []Response{}, err
+	}
+
+	err = rawQuery.Offset(query.Offset).Limit(query.Limit).Order("end_at asc").Find(&ads).Error
 	return ads, err
 }

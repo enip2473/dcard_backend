@@ -2,7 +2,6 @@ package api
 
 import (
 	"dcard_backend/pkg/ads"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -64,17 +63,19 @@ func ListAds(repo ads.Repository) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		query, err := ParseQuery(c)
 		if err != nil {
-			fmt.Println(err)
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": err.Error(),
 			})
 		}
+
 		ads, err := repo.ListActiveAds(query)
+
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
 			})
 		}
+
 		return c.JSON(fiber.Map{
 			"items": ads,
 		})
