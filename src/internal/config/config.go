@@ -3,16 +3,16 @@ package config
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/spf13/viper"
 )
 
 type Config struct {
-	DatabaseURL string        `mapstructure:"DATABASE_URL" yaml:"database_url,omitempty"`
-	Port        string        `mapstructure:"PORT" yaml:"port,omitempty"`
-	LogLevel    string        `mapstructure:"LOG_LEVEL"`
-	Timeout     time.Duration `mapstructure:"TIMEOUT"`
+	DatabaseURL string `mapstructure:"DATABASE_URL" yaml:"database_url,omitempty"`
+	Port        string `mapstructure:"PORT" yaml:"port,omitempty"`
+	LogLevel    string `mapstructure:"LOG_LEVEL"`
+	RedisAddr   string `mapstructure:"REDIS_ADDR" yaml:"redis_addr,omitempty"`
+	RedisPass   string `mapstructure:"REDIS_PASS" yaml:"redis_pass,omitempty"`
 }
 
 func LoadConfig(path string) (*Config, error) {
@@ -27,6 +27,14 @@ func LoadConfig(path string) (*Config, error) {
 
 	if err := viper.BindEnv("PORT"); err == nil {
 		viper.SetDefault("PORT", 4444)
+	}
+
+	if err := viper.BindEnv("REDIS_ADDR"); err == nil {
+		viper.SetDefault("REDIS_ADDR", "")
+	}
+
+	if err := viper.BindEnv("REDIS_PASS"); err == nil {
+		viper.SetDefault("REDIS_PASS", "")
 	}
 
 	var cfg Config

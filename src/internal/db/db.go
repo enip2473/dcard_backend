@@ -15,13 +15,11 @@ func ConnectGorm(dbURL string) (*gorm.DB, error) {
 		return nil, fmt.Errorf("error connecting to database: %w", err)
 	}
 
-	// Optional: Configure GORM settings
 	sqlDB, err := db.DB()
 	if err != nil {
 		return nil, err
 	}
 
-	// Set connection pool settings (adjust these based on your needs)
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
