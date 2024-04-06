@@ -41,7 +41,7 @@ func (repo *AdRepository) ListActiveAds(query Query) ([]Response, error) {
 	var ads []Response
 
 	now := time.Now()
-	rawQuery := repo.db.Model(&Ad{}).Select("title, end_at").Where("start_at < ?", now).Where("end_at > ?", now)
+	rawQuery := repo.db.Model(&Ad{}).Select("title, end_at").Where("end_at > ?", now).Where("start_at < ?", now)
 
 	if query.Age != -1 {
 		rawQuery = rawQuery.Where("? BETWEEN age_start AND age_end", query.Age)

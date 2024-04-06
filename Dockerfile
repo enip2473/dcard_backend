@@ -1,17 +1,9 @@
-FROM golang:1.22.0-alpine3.18
-
+FROM golang:1.22 AS builder
 WORKDIR /app
-
-COPY go.mod .
-
-COPY go.sum .
-
-RUN go mod download
-
 COPY . .
+WORKDIR /app/src/cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -tags=viper_bind_struct -o /server main.go
 
-RUN go build -o main .
-
-EXPOSE 3000
-
-CMD ["./main"]
+FROM gcr.io/distroless/base-debian10
+COPY --from=builder /server /
+CMD ["/server"]

@@ -1,4 +1,3 @@
 database_url: postgresql://enip2473:C0dYAOa1lHNe@ep-fancy-pine-72112214.ap-southeast-1.aws.neon.tech/dcard?sslmode=require
-test_database_url: postgresql://enip2473:C0dYAOa1lHNe@ep-fancy-pine-72112214.ap-southeast-1.aws.neon.tech/dcard_test?sslmode=require
 port: 8080
 log_level: info

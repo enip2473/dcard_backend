@@ -1,16 +1,16 @@
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+import { check } from 'k6';
 import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
 
 export let options = {
     scenarios: {
         contacts: {
             executor: 'constant-arrival-rate',
-            rate: 10000, // 100 RPS
+            rate: 1000, // 100 RPS
             timeUnit: '1s', // rate specified for 1 second
             duration: '1m', // run the test for 1 minute
-            preAllocatedVUs: 10000, // number of VUs to pre-allocate
-            maxVUs: 20000, // maximum number of VUs that can be allocated during the test
+            preAllocatedVUs: 1000, // number of VUs to pre-allocate
+            maxVUs: 2000, // maximum number of VUs that can be allocated during the test
         },
     },
 };

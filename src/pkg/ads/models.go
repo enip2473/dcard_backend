@@ -45,7 +45,7 @@ type Ad struct {
 	gorm.Model
 	Title        string       `json:"title"`
 	StartAt      time.Time    `json:"startAt"`
-	EndAt        time.Time    `json:"endAt"`
+	EndAt        time.Time    `json:"endAt" gorm:"index"`
 	AgeStart     int          `json:"startAge"`
 	AgeEnd       int          `json:"endAge"`
 	GenderTarget GenderTarget `json:"genderTarget"`
