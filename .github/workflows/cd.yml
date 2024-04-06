@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
@@ -30,9 +30,9 @@ jobs:
     needs: build_and_push
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up Google Cloud SDK (again, for this job)
+      - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
@@ -46,4 +46,4 @@ jobs:
             --platform managed \
             --region asia-east1 \
             --allow-unauthenticated \
-            --set-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }},PORT=80
+            --set-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }}
