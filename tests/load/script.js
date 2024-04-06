@@ -27,8 +27,8 @@ function maybeAddQueryParam(baseURL, paramName, paramValue) {
 }
 
 export default function () {
-    let url = 'https://dcard-backend-33cjpqddvq-de.a.run.app/api/v1/ad';
-    // let url = 'http://127.0.0.1:8000/api/v1/ad';
+    // let url = 'https://dcard-backend-33cjpqddvq-de.a.run.app/api/v1/ad';
+    let url = 'http://127.0.0.1:8080/api/v1/ad';
 
     url = maybeAddQueryParam(url, 'age', randomIntBetween(1, 100));
     url = maybeAddQueryParam(url, 'gender', Math.random() > 0.5 ? 'M' : 'F');
