@@ -21,10 +21,13 @@ func LoadConfig(path string) (*Config, error) {
 	viper.AddConfigPath(path)
 	viper.AutomaticEnv()
 
-	viper.BindEnv("DATABASE_URL")
-	viper.SetDefault("DATABASE_URL", "")
-	viper.BindEnv("PORT")
-	viper.SetDefault("PORT", 4444)
+	if err := viper.BindEnv("DATABASE_URL"); err == nil {
+		viper.SetDefault("DATABASE_URL", "")
+	}
+
+	if err := viper.BindEnv("PORT"); err == nil {
+		viper.SetDefault("PORT", 4444)
+	}
 
 	var cfg Config
 
