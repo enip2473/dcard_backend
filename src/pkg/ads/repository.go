@@ -22,6 +22,7 @@ func NewAdRepository(db *gorm.DB) *AdRepository {
 }
 
 func (repo *AdRepository) CreateAd(ad *Ad) error {
+	IncrementCacheVersion()
 	return repo.db.Create(ad).Error
 }
 
@@ -67,11 +68,11 @@ func (repo *AdRepository) ListActiveAds(query Query) ([]Response, error) {
 			Where("ad_platforms.platform_name = ? OR ad_platforms.platform_name = 'any'", query.Platform)
 	}
 
-	err = RedisInsert(query, ads)
+	err = rawQuery.Offset(query.Offset).Limit(query.Limit).Order("end_at asc").Find(&ads).Error
 	if err != nil {
 		return []Response{}, err
 	}
 
-	err = rawQuery.Offset(query.Offset).Limit(query.Limit).Order("end_at asc").Find(&ads).Error
+	err = RedisInsert(query, ads)
 	return ads, err
 }

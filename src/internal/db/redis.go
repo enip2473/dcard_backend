@@ -16,6 +16,10 @@ func InitRedis(redisAddr string, redisPass string) error {
 	})
 
 	err := RedisClient.Ping(Ctx).Err()
+	if err != nil {
+		return err
+	}
+	err = RedisClient.FlushAll(Ctx).Err()
 	return err
 }
 

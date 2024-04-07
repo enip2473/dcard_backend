@@ -4,11 +4,40 @@ import (
 	"dcard_backend/internal/db"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
+func GetCurrentCacheVersion() (int, error) {
+	val, err := db.GetRedisClient().Get(db.Ctx, "cache_version").Result()
+	if err == redis.Nil {
+		return 1, nil
+	} else if err != nil {
+		return 0, err
+	}
+
+	version, err := strconv.Atoi(val)
+	if err != nil {
+		return 0, err
+	}
+
+	return version, nil
+}
+
+func IncrementCacheVersion() error {
+	_, err := db.GetRedisClient().Incr(db.Ctx, "cache_version").Result()
+	return err
+}
+
 func RedisQuery(query Query) ([]Response, error) {
-	queryString := QueryToString(query)
+
+	cacheVersion, err := GetCurrentCacheVersion()
+	if err != nil {
+		return []Response{}, err
+	}
+	queryString := QueryToString(query, cacheVersion)
 	val, err := db.GetRedisClient().Get(db.Ctx, queryString).Result()
 
 	if err != nil {
@@ -39,19 +68,26 @@ func RedisQuery(query Query) ([]Response, error) {
 }
 
 func RedisInsert(query Query, ads []Response) error {
-	queryString := QueryToString(query)
+	cacheVersion, err := GetCurrentCacheVersion()
+
+	if err != nil {
+		return err
+	}
+
+	queryString := QueryToString(query, cacheVersion)
 	serialized, err := json.Marshal(ads)
 
 	if err != nil {
 		return err
 	}
-	err = db.GetRedisClient().Set(db.Ctx, queryString, serialized, 0).Err()
+	err = db.GetRedisClient().Set(db.Ctx, queryString, serialized, time.Minute).Err()
 	return err
 }
 
-func QueryToString(query Query) string {
+func QueryToString(query Query, cacheVersion int) string {
 	queryString := fmt.Sprintf(
-		"offset=%d&limit=%d&age=%d&gender=%s&country=%s&platform=%s",
+		"v=%d&offset=%d&limit=%d&age=%d&gender=%s&country=%s&platform=%s",
+		cacheVersion,
 		query.Offset,
 		query.Limit,
 		query.Age,

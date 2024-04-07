@@ -54,11 +54,9 @@ type Ad struct {
 }
 
 type Country struct {
-	gorm.Model
 	Code string `gorm:"primaryKey" json:"code"`
 }
 
 type Platform struct {
-	gorm.Model
 	Name string `gorm:"primaryKey" json:"name"`
 }
