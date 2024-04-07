@@ -22,7 +22,10 @@ func NewAdRepository(db *gorm.DB) *AdRepository {
 }
 
 func (repo *AdRepository) CreateAd(ad *Ad) error {
-	IncrementCacheVersion()
+	err := IncrementCacheVersion()
+	if err != nil {
+		return err
+	}
 	return repo.db.Create(ad).Error
 }
 
