@@ -4,7 +4,7 @@
 
 A backend service for managing advertisements with high performance and scalability.
 
-To try it online, make API requests to  [https://dcard-backend-33cjpqddvq-de.a.run.app/](https://dcard-backend-33cjpqddvq-de.a.run.app/).
+To try it online, make API requests to  [https://dcard-backend-33cjpqddvq-de.a.run.app/api/v1/ad](https://dcard-backend-33cjpqddvq-de.a.run.app/api/v1/ad).
 
 To try it locally, clone the repository and run the following commands:
 
@@ -122,3 +122,8 @@ It reached 1500 RPS in remote environment without using Redis. I can't conduct l
 | 4/6 23:00     | Migrate the database to GCP, RPS=2000  |
 | 4/7 02:00     | Add Redis to the project  |
 | 4/7 02:45     | Use docker-compose to run and test the project locally, RPS=10000+  |
+
+## Further Improvements
+
+- Deploy the project with kubernetes and use a load balancer to distribute the traffic.
+- Optimize the cache system.
